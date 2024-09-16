@@ -48,62 +48,62 @@ export default function Home() {
     return () => observer.disconnect();
   }, []);
 
-  async function getInitData(videoId: string) {
-    const res = await getInitParams(videoId);
+  // async function getInitData(videoId: string) {
+  //   const res = await getInitParams(videoId);
 
-    setApiKey(res.innertube_api_key);
-    setContinuation(res.continuation);
-    setCver(res.cver);
+  //   setApiKey(res.innertube_api_key);
+  //   setContinuation(res.continuation);
+  //   setCver(res.cver);
 
-    setChats(chats => {
-      const addChatItemActions = res.actions.filter(action => 'addChatItemAction' in action);
+  //   setChats(chats => {
+  //     const addChatItemActions = res.actions.filter(action => 'addChatItemAction' in action);
 
-      if (addChatItemActions.length == 0) return chats;
+  //     if (addChatItemActions.length == 0) return chats;
 
-      chats = structuredClone(chats);
+  //     chats = structuredClone(chats);
 
-      for (const action of addChatItemActions) {
-        if ('liveChatTextMessageRenderer' in action.addChatItemAction.item) {
-          const chatId = action.addChatItemAction.item.liveChatTextMessageRenderer.id;
-          const userId = action.addChatItemAction.item.liveChatTextMessageRenderer.authorExternalChannelId;
-          const userName = action.addChatItemAction.item.liveChatTextMessageRenderer.authorName.simpleText;
-          const authorPhoto = action.addChatItemAction.item.liveChatTextMessageRenderer.authorPhoto.thumbnails.at(0)?.url ?? '';
-          const message = action.addChatItemAction.item.liveChatTextMessageRenderer.message.runs;
-          const timestamp = new Date(Number.parseInt(action.addChatItemAction.item.liveChatTextMessageRenderer.timestampUsec) / 1000);
-          const removed = false;
+  //     for (const action of addChatItemActions) {
+  //       if ('liveChatTextMessageRenderer' in action.addChatItemAction.item) {
+  //         const chatId = action.addChatItemAction.item.liveChatTextMessageRenderer.id;
+  //         const userId = action.addChatItemAction.item.liveChatTextMessageRenderer.authorExternalChannelId;
+  //         const userName = action.addChatItemAction.item.liveChatTextMessageRenderer.authorName.simpleText;
+  //         const authorPhoto = action.addChatItemAction.item.liveChatTextMessageRenderer.authorPhoto.thumbnails.at(0)?.url ?? '';
+  //         const message = action.addChatItemAction.item.liveChatTextMessageRenderer.message.runs;
+  //         const timestamp = new Date(Number.parseInt(action.addChatItemAction.item.liveChatTextMessageRenderer.timestampUsec) / 1000);
+  //         const removed = false;
 
-          chats.set(chatId, {
-            userId,
-            userName,
-            authorPhoto,
-            message,
-            timestamp,
-            removed
-          });
-        }
-      }
+  //         chats.set(chatId, {
+  //           userId,
+  //           userName,
+  //           authorPhoto,
+  //           message,
+  //           timestamp,
+  //           removed
+  //         });
+  //       }
+  //     }
 
-      return chats;
-    });
+  //     return chats;
+  //   });
 
-    setChats(chats => {
-      const removeChatItemActions = res.actions.filter(action => 'removeChatItemAction' in action);
+  //   setChats(chats => {
+  //     const removeChatItemActions = res.actions.filter(action => 'removeChatItemAction' in action);
 
-      if (removeChatItemActions.length == 0) return chats;
+  //     if (removeChatItemActions.length == 0) return chats;
 
-      chats = structuredClone(chats);
+  //     chats = structuredClone(chats);
 
-      for (const action of removeChatItemActions) {
-        const chat = chats.get(action.removeChatItemAction.targetItemId);
-        if (chat == null) continue;
+  //     for (const action of removeChatItemActions) {
+  //       const chat = chats.get(action.removeChatItemAction.targetItemId);
+  //       if (chat == null) continue;
 
-        chat.removed = true;
-        chats.set(action.removeChatItemAction.targetItemId, chat);
-      }
+  //       chat.removed = true;
+  //       chats.set(action.removeChatItemAction.targetItemId, chat);
+  //     }
 
-      return chats;
-    });
-  }
+  //     return chats;
+  //   });
+  // }
 
   async function getChatData(apiKey: string, continuation: string, cver: string) {
     const res = await getLiveChat(apiKey, continuation, cver);
