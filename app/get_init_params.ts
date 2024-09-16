@@ -7,9 +7,9 @@ import { ytInitialData } from './yt_initial_data'
 export async function getInitParams(videoId: string) {
     'use server';
 
-    let res: AxiosResponse;
-    let ytCfg: ytCfg;
-    let ytInitialData: ytInitialData;
+    let res: AxiosResponse | null = null;
+    let ytCfg: ytCfg | null = null;
+    let ytInitialData: ytInitialData | null = null;
 
     try {
         res = await axios.get(`https://www.youtube.com/live_chat?is_popout=1&v=${videoId}`, {
@@ -19,12 +19,12 @@ export async function getInitParams(videoId: string) {
         });
 
         ytCfg = (() => {
-            const jsonString = (res.data as string)?.match(/ytcfg\.set\(\{.*\}\)/)![0].replace(/ytcfg\.set\((.*)\)/, '$1');
+            const jsonString = (res!.data as string)?.match(/ytcfg\.set\(\{.*\}\)/)![0].replace(/ytcfg\.set\((.*)\)/, '$1');
             return JSON.parse(jsonString) as ytCfg;
         })();
 
         ytInitialData = (() => {
-            const jsonString = (res.data as string)?.match(/window\["ytInitialData"\] = \{.*\};/)![0].replace(/window\["ytInitialData"\] = (.*);/, '$1');
+            const jsonString = (res!.data as string)?.match(/window\["ytInitialData"\] = \{.*\};/)![0].replace(/window\["ytInitialData"\] = (.*);/, '$1');
             return JSON.parse(jsonString) as ytInitialData;
         })();
 
@@ -37,9 +37,9 @@ export async function getInitParams(videoId: string) {
     } catch (ex) {
         return {
             error: (ex as Error).message,
-            res: res!,
-            ytCfg: ytCfg!,
-            ytInitialData: ytInitialData!
+            res: res,
+            ytCfg: ytCfg,
+            ytInitialData: ytInitialData
         };
     }
 }
