@@ -112,6 +112,11 @@ export default function Home() {
   async function getChatData(apiKey: string, continuation: string, cver: string) {
     const res = await getLiveChat(apiKey, continuation, cver);
 
+    if ('error' in res) {
+      console.log(res.error);
+      return;
+    }
+
     const actions = res?.continuationContents.liveChatContinuation.actions;
     if (actions == null) return;
 

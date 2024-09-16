@@ -54,6 +54,8 @@ export async function getLiveChat(apiKey: string, continuation: string, cver: st
 
         return res.data;
     } catch(ex) {
-        return null;
+        return {
+            error: ex as Error
+        };
     }
 }
