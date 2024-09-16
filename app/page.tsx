@@ -148,7 +148,7 @@ export default function Home() {
 
       chats = structuredClone(chats);
 
-      for (let action of removeChatItemActions) {
+      for (const action of removeChatItemActions) {
         const chat = chats.get(action.removeChatItemAction.targetItemId);
         if (chat == null) continue;
 
@@ -180,7 +180,7 @@ export default function Home() {
         <div>
           <table id='chat_table' className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <tbody>
-              {Array.from(chats.values()).map(chat => <tr className={`bg-white border-b dark:bg-gray-800 dark:border-gray-700 ${chat.removed ? 'blur' : ''}`}>
+              {Array.from(chats.entries()).map(([chatId, chat]) => <tr key={chatId} className={`bg-white border-b dark:bg-gray-800 dark:border-gray-700 ${chat.removed ? 'blur' : ''}`}>
                 <td className="p-1">
                   <p className=''>{`${chat.timestamp.getHours().toString().padStart(2, '0')}:${chat.timestamp.getMinutes().toString().padStart(2, '0')}`}</p>
                 </td>
@@ -193,7 +193,7 @@ export default function Home() {
                 <td className="p-1">
                   <p>{chat.message.map(run => {
                     if ('text' in run) return run.text;
-                    if ('emoji' in run) return <img src={run.emoji.image.thumbnails.at(0)?.url} className='inline size-4' />
+                    if ('emoji' in run) return <img key={run.emoji.emojiId} src={run.emoji.image.thumbnails.at(0)?.url} className='inline size-4' />
                   })}</p>
                 </td>
               </tr>)}
