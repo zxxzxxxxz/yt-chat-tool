@@ -8,7 +8,7 @@ import { run } from './chat_item_action';
 import useInterval from 'use-interval';
 
 export default function Home() {
-  const [videoId, setVideoId] = useState('79XaA_4CYj8');
+  const [videoId, setVideoId] = useState('');
   const [apiKey, setApiKey] = useState('');
   const [continuation, setContinuation] = useState('');
   const [cver, setCver] = useState('');
@@ -214,9 +214,11 @@ export default function Home() {
             chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
           }}>↓</button>
         </div>
-        <p>apiKey: {apiKey}</p>
-        <p>continuation: {continuation}</p>
-        <p>cver: {cver}</p>
+        <div hidden={true}>
+          <p>apiKey: {apiKey}</p>
+          <p>continuation: {continuation}</p>
+          <p>cver: {cver}</p>
+        </div>
       </footer>
     </div>
   );
