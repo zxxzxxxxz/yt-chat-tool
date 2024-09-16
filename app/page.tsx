@@ -6,6 +6,7 @@ import { getInitParams } from './get_init_params';
 import { getLiveChat } from './get_live_chat';
 import { run } from './chat_item_action';
 import useInterval from 'use-interval';
+import { test } from './test';
 
 export default function Home() {
   const [videoId, setVideoId] = useState('79XaA_4CYj8');
@@ -176,7 +177,9 @@ export default function Home() {
           <input type="text" className='shadow appearance-none border rounded w-full py-1 px-1 text-gray-700 leading-tight focus:outline-none focus:shadow-outline' value={videoId} onInput={(event) => setVideoId(event.currentTarget.value)}></input>
 
           <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-1 rounded focus:outline-none focus:shadow-outline" style={{ textWrap: 'nowrap' }} onClick={async () => {
-            await getInitData(videoId);
+            // await getInitData(videoId);
+            const ee = await test(videoId);
+            console.log(ee);
           }}>接続</button>
         </div>
       </header>
