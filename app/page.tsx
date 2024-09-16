@@ -1,11 +1,9 @@
 'use client';
 
-import { act, useRef, useState, useEffect } from 'react';
-import Image from "next/image";
+import { useRef, useState, useEffect } from 'react';
 
 import { getInitParams } from './get_init_params';
 import { getLiveChat } from './get_live_chat';
-import { setTimeout } from 'timers';
 import { run } from './chat_item_action';
 import useInterval from 'use-interval';
 
@@ -63,7 +61,7 @@ export default function Home() {
 
       chats = structuredClone(chats);
 
-      for (let action of addChatItemActions) {
+      for (const action of addChatItemActions) {
         if ('liveChatTextMessageRenderer' in action.addChatItemAction.item) {
           const chatId = action.addChatItemAction.item.liveChatTextMessageRenderer.id;
           const userId = action.addChatItemAction.item.liveChatTextMessageRenderer.authorExternalChannelId;
@@ -94,7 +92,7 @@ export default function Home() {
 
       chats = structuredClone(chats);
 
-      for (let action of removeChatItemActions) {
+      for (const action of removeChatItemActions) {
         const chat = chats.get(action.removeChatItemAction.targetItemId);
         if (chat == null) continue;
 
@@ -119,7 +117,7 @@ export default function Home() {
 
       chats = structuredClone(chats);
 
-      for (let action of addChatItemActions) {
+      for (const action of addChatItemActions) {
         if ('liveChatTextMessageRenderer' in action.addChatItemAction.item) {
           const chatId = action.addChatItemAction.item.liveChatTextMessageRenderer.id;
           const userId = action.addChatItemAction.item.liveChatTextMessageRenderer.authorExternalChannelId;
