@@ -50,6 +50,11 @@ export default function Home() {
   async function getInitData(videoId: string) {
     const res = await getInitParams(videoId);
 
+    if (res.error) {
+      console.log(res.error);
+      return;
+    }
+
     setApiKey(res.innertube_api_key);
     setContinuation(res.continuation);
     setCver(res.cver);
