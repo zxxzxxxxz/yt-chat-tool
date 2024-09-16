@@ -51,7 +51,7 @@ export default function Home() {
     const res = await getInitParams(videoId);
 
     if ('error' in res) {
-      console.log(res.error);
+      console.log(res);
       return;
     }
 
