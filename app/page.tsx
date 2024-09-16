@@ -50,8 +50,6 @@ export default function Home() {
   async function getInitData(videoId: string) {
     const res = await getInitParams(videoId);
 
-    console.log('data: ' + res.error);
-
     setApiKey(res.innertube_api_key);
     setContinuation(res.continuation);
     setCver(res.cver);
@@ -216,6 +214,9 @@ export default function Home() {
             chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
           }}>↓</button>
         </div>
+        <p>apiKey: {apiKey}</p>
+        <p>continuation: {continuation}</p>
+        <p>cver: {cver}</p>
       </footer>
     </div>
   );
