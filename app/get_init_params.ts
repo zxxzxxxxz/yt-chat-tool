@@ -1,6 +1,6 @@
 'use server';
 
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
 import { ytCfg } from './yt_cfg';
 import { ytInitialData } from './yt_initial_data'
 
