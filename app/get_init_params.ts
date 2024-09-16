@@ -1,29 +1,31 @@
 'use server';
 
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { ytCfg } from './yt_cfg';
 import { ytInitialData } from './yt_initial_data'
 
 export async function getInitParams(videoId: string) {
     'use server';
 
+    let res: AxiosResponse;
+    let ytCfg: ytCfg;
+    let ytInitialData: ytInitialData;
+
     try {
-        const res = await axios.get(`https://www.youtube.com/live_chat?is_popout=1&v=${videoId}`, {
+        res = await axios.get(`https://www.youtube.com/live_chat?is_popout=1&v=${videoId}`, {
             headers: {
                 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36'
             }
         });
 
-        const ytCfg = (() => {
-            const jsonString = (res.data as string)?.match(/ytcfg\.set\(\{.*\}\)/)?.at(0)?.replace(/ytcfg\.set\((.*)\)/, '$1');
-            if (jsonString) return JSON.parse(jsonString) as ytCfg;
-            return null;
+        ytCfg = (() => {
+            const jsonString = (res.data as string)?.match(/ytcfg\.set\(\{.*\}\)/)![0].replace(/ytcfg\.set\((.*)\)/, '$1');
+            return JSON.parse(jsonString) as ytCfg;
         })();
 
-        const ytInitialData = (() => {
-            const jsonString = (res.data as string)?.match(/window\["ytInitialData"\] = \{.*\};/)?.at(0)?.replace(/window\["ytInitialData"\] = (.*);/, '$1');
-            if (jsonString) return JSON.parse(jsonString) as ytInitialData;
-            return null;
+        ytInitialData = (() => {
+            const jsonString = (res.data as string)?.match(/window\["ytInitialData"\] = \{.*\};/)![0].replace(/window\["ytInitialData"\] = (.*);/, '$1');
+            return JSON.parse(jsonString) as ytInitialData;
         })();
 
         return {
@@ -34,7 +36,10 @@ export async function getInitParams(videoId: string) {
         };
     } catch (ex) {
         return {
-            error: (ex as Error).message
+            error: (ex as Error).message,
+            res: res!,
+            ytCfg: ytCfg!,
+            ytInitialData: ytInitialData!
         };
     }
 }
