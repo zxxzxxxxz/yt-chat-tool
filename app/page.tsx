@@ -50,7 +50,7 @@ export default function Home() {
   async function getInitData(videoId: string) {
     const res = await getInitParams(videoId);
 
-    if (res.error) {
+    if ('error' in res) {
       console.log(res.error);
       return;
     }

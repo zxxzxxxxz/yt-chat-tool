@@ -34,7 +34,7 @@ export async function getInitParams(videoId: string) {
         };
     } catch (ex) {
         return {
-            error: ex as Error
+            error: (ex as Error).message
         };
     }
 }
