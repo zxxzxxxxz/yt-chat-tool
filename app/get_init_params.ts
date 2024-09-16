@@ -15,12 +15,20 @@ export async function getInitParams(videoId: string) {
 
     const ytCfg = (() => {
         const jsonString = (res.data as string)?.match(/ytcfg\.set\(\{.*\}\)/)![0].replace(/ytcfg\.set\((.*)\)/, '$1');
-        return JSON.parse(jsonString) as ytCfg;
+        try {
+            return JSON.parse(jsonString) as ytCfg;
+        } catch (ex) {
+            return {} as ytCfg;
+        }
     })();
 
     const ytInitialData = (() => {
         const jsonString = (res.data as string)?.match(/window\["ytInitialData"\] = \{.*\};/)![0].replace(/window\["ytInitialData"\] = (.*);/, '$1');
-        return JSON.parse(jsonString) as ytInitialData;
+        try {
+            return JSON.parse(jsonString) as ytInitialData;
+        } catch (ex) {
+            return {} as ytInitialData;
+        }
     })();
 
     return {
